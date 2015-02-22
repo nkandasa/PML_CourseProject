@@ -7,7 +7,7 @@ output: html_document
 ###A Machine Learning Algorithm to Predict Activity Quality from Activity Monitors
 
 ###Synopsis
-A machine learning algorithm was developed to predict activity quality from activity monitors. Exploratory data analysis was done to understand the data and perform any data pre-processing. Cross-validation was done by splitting the "Training" dataset into two subsets (70% data for training, 30% for testing). After cross-validation, a
+A machine learning algorithm was developed to predict activity quality from activity monitors. Exploratory data analysis was done to understand the data and perform any data pre-processing. Cross-validation was done by splitting the "Training" dataset into two subsets (70% data for training, 30% for testing). After cross-validation, a Random Forest model was built to predict the outcome "classe". The model was used to generate answers for the "test" data set.
 
 ###Downloading Data 
 In this step, training and test data sets are downloaded from the website, http://groupware.les.inf.puc-rio.br/har. The author would like to acknowledge Velloso et.al (2013) for their generosity in providing the WLE data sets for this project. Also see Data Source section for additional reference. 

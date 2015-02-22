@@ -62,7 +62,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 </div>
 <div id="synopsis" class="section level3">
 <h3>Synopsis</h3>
-<p>A machine learning algorithm was developed to predict activity quality from activity monitors. Exploratory data analysis was done to understand the data and perform any data pre-processing. Cross-validation was done by splitting the “Training” dataset into two subsets (70% data for training, 30% for testing). After cross-validation, a</p>
+<p>A machine learning algorithm was developed to predict activity quality from activity monitors. Exploratory data analysis was done to understand the data and perform any data pre-processing. Cross-validation was done by splitting the “Training” dataset into two subsets (70% data for training, 30% for testing). After cross-validation, a Random Forest model was built to predict the outcome “classe”. The model was used to generate answers for the “test” data set.</p>
 </div>
 <div id="downloading-data" class="section level3">
 <h3>Downloading Data</h3>
@@ -107,11 +107,11 @@ pred &lt;- predict(modFit, testing)
 confusionMatrix(pred, testing$classe)$table</code></pre>
 <pre><code>##           Reference
 ## Prediction    A    B    C    D    E
-##          A 1673    7    0    0    0
-##          B    0 1132    6    0    0
-##          C    0    0 1020   11    0
-##          D    0    0    0  953    5
-##          E    1    0    0    0 1077</code></pre>
+##          A 1672    1    0    0    0
+##          B    1 1134    1    0    0
+##          C    0    4 1025   11    0
+##          D    0    0    0  951    0
+##          E    1    0    0    2 1082</code></pre>
 <div id="figure-1-confusionmatrix-using-the-testing-sample-from-the-train_clean-data-set" class="section level4">
 <h4>Figure 1: confusionMatrix using the “testing” sample from the “train_clean” data set</h4>
 </div>
