@@ -1,0 +1,76 @@
+---
+output: html_document
+---
+##Peer Assessment - Practical Machine Learning Course Project Write-up
+####Author:NK
+
+###A Machine Learning Algorithm to Predict Activity Quality from Activity Monitors
+
+###Synopsis
+A machine learning algorithm was developed to predict activity quality from activity monitors. Exploratory data analysis was done to understand the data and perform any data pre-processing. Cross-validation was done by splitting the "Training" dataset into two subsets (70% data for training, 30% for testing). After cross-validation, a
+
+###Downloading Data 
+In this step, training and test data sets are downloaded from the website, http://groupware.les.inf.puc-rio.br/har. The author would like to acknowledge Velloso et.al (2013) for their generosity in providing the WLE data sets for this project. Also see Data Source section for additional reference. 
+
+```{r Downloading Data, echo=TRUE, message=FALSE, warning=FALSE}
+
+if (!file.exists("Data")) {
+  dir.create("Data")
+}
+setwd("c:\\PML\\Data")
+
+fileurl_train <- "http://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+fileurl_test <- "http://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+
+download.file(fileurl_train, destfile="train.csv")
+download.file(fileurl_test, destfile="test.csv")
+
+train <- data.frame()
+train <- read.csv("c:\\PML\\Data\\train.csv",header =TRUE, na.strings = c("", " ","NA"))
+
+test <- data.frame()
+test <- read.csv("c:\\PML\\Data\\test.csv",header =TRUE, na.strings = c("", " ","NA"))
+```
+
+###Cleaning "train" Data
+In this step, "train" data was explored using str() function (output not show). Several columns with "NA" were noticed and removed from the "train" data set.
+
+```{r Basic Exploratory Analyses & Cleaning, echo=TRUE, message=FALSE}
+train_clean <- train[, !apply(train, 2, function(x) any(is.na(x)))] # resulted in 60 variables (59 predictors and 1 Outcome [classe]) that would be used in building the model
+train_clean <- train_clean[, -c(1:7)] # Also removed the columns 1 thru 7 because they are just identifiers. 
+```
+
+###Cross-Validation and Random Forest Model
+In this step, cleaned train data is split in to 70% "training" and 30% "testing" data sets for cross-validation purposes. A Random Forest model is built using the "training" data and evaluated using the "testing" dataset. Although, machine learning using Random Forests has no need of an explicit "testing" sample because of its use of bootstrap sampling for every tree, an explicit "testing" data from "train" data set is used to get true "out-of-sample" prediction errors and to reduce overfitting. As expected the confusionMatrix (Figure 1) shows high accuracy of prediction.
+
+
+```{r Cross-validation, echo=TRUE,message=FALSE}
+library(caret)
+library(randomForest)
+inTrain <- createDataPartition(y=train_clean$classe, p=.7, list=FALSE)
+
+training <- train_clean[inTrain,]
+testing <-  train_clean[-inTrain,]
+
+modFit <- randomForest(classe ~., training)
+
+pred <- predict(modFit, testing)
+
+confusionMatrix(pred, testing$classe)$table
+```
+####Figure 1: confusionMatrix using the "testing" sample from the "train_clean" data set
+
+###Applying the Model to "test" data and generating answers for submission.
+
+```{r Apply Mode, echo=TRUE,message=FALSE}
+Finalpred <- predict(modFit, test)
+print(Finalpred)
+```
+
+
+The outputs from "Finalpred" were submitted to the "Prediction Assignment Submission"" section using the "pml_write_files" function provided in the assignment instructions.
+
+###Data Source
+Velloso, E.; Bulling, A.; Gellersen, H.; Ugulino, W.; Fuks, H. Qualitative Activity Recognition of Weight Lifting Exercises. Proceedings of 4th International Conference in Cooperation with SIGCHI (Augmented Human '13) . Stuttgart, Germany: ACM SIGCHI, 2013.
+
+
